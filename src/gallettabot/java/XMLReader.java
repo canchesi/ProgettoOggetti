@@ -37,7 +37,7 @@ public class XMLReader {
 
     //-------------------------------
     public static void main(String[] args) {
-        XMLReader prova = new XMLReader("src/gallettabot/config.xml");
+        XMLReader prova = new XMLReader("src/gallettabot/config/config.xml");
         System.out.println(prova.getParsingFileAbs());
         System.out.println(prova.getParsingFile());
     }
