@@ -5,17 +5,15 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import java.io.*;
 
-public class Config extends XMLReader{
+public class Config{
 
     private final String token;
 
     public Config(String path){
-        super(path);
-        token = getTokenFromFile();
-    }
 
-    private String getTokenFromFile(){
-        return this.getDoc().getDocumentElement().getAttribute("id");
+        XMLReader config = new XMLReader(path);
+        token = config.getDoc().getDocumentElement().getAttribute("id");
+
     }
 
     public String getToken() {

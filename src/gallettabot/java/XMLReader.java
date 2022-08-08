@@ -13,10 +13,10 @@ public class XMLReader {
 
     public XMLReader(String path){
         try{
-            this.parsingFile                = new File(path);
-            DocumentBuilderFactory  dbf     = DocumentBuilderFactory.newInstance();
-            DocumentBuilder         parser  = dbf.newDocumentBuilder();
-            this.doc                        = parser.parse(getParsingFile());
+            this.parsingFile = new File(path);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder parser = dbf.newDocumentBuilder();
+            this.doc = parser.parse(getParsingFile());
         } catch (ParserConfigurationException | IOException | SAXException | NullPointerException e) {
             throw new RuntimeException(e);
         }
