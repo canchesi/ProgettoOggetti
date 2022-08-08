@@ -8,26 +8,38 @@ import java.io.*;
 
 public class XMLReader {
 
-    private File readingFile;
-    private DocumentBuilder parser;
+    private final File parsingFile;
+    private final Document doc;
 
-    public XMLReader(String path) {
+    public XMLReader(String path){
         try{
-            this.readingFile            = new File(path);
-            DocumentBuilderFactory  dbf = DocumentBuilderFactory.newInstance();
-            this.parser                 = dbf.newDocumentBuilder();
-            Document                doc = parser.parse(getReadingFile());
-
-
+            this.parsingFile                = new File(path);
+            DocumentBuilderFactory  dbf     = DocumentBuilderFactory.newInstance();
+            DocumentBuilder         parser  = dbf.newDocumentBuilder();
+            this.doc                        = parser.parse(getParsingFile());
         } catch (ParserConfigurationException | IOException | SAXException | NullPointerException e) {
             throw new RuntimeException(e);
         }
 
-
-
     }
 
-    public File getReadingFile() {
-        return readingFile;
+    public File getParsingFile() {
+        return parsingFile;
     }
+
+    public String getParsingFileAbs(){
+        return this.parsingFile.getAbsolutePath();
+    }
+
+    public Document getDoc() {
+        return doc;
+    }
+
+    //-------------------------------
+    public static void main(String[] args) {
+        XMLReader prova = new XMLReader("src/gallettabot/config.xml");
+        System.out.println(prova.getParsingFileAbs());
+        System.out.println(prova.getParsingFile());
+    }
+
 }

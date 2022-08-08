@@ -7,17 +7,18 @@ import java.io.*;
 
 public class Config extends XMLReader{
 
+    private final String token;
 
-    public Config(String path) {
-        try{
-            DocumentBuilderFactory  dbf     = DocumentBuilderFactory.newInstance();
-            File                    config  = new File(path);
-            Document                doc     = parser.parse(config);
-            this.parser                     = dbf.newDocumentBuilder();
-
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
+    public Config(String path){
+        super(path);
+        token = getTokenFromFile();
     }
 
+    private String getTokenFromFile(){
+        return this.getDoc().getDocumentElement().getAttribute("id");
+    }
+
+    public String getToken() {
+        return token;
+    }
 }
