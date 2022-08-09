@@ -1,22 +1,24 @@
 package src.gallettabot.java;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.w3c.dom.Element;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.Iterator;
 
 
 public class GallettaBot extends TelegramLongPollingBot{
 
     private final Config config;
+    private final DatabaseClient client;
 
     public GallettaBot(){
         super();
         this.config = new Config("src/gallettabot/config/config.xml");
+        this.client = new DatabaseClient(this.config);
     }
 
     @Override
@@ -33,25 +35,16 @@ public class GallettaBot extends TelegramLongPollingBot{
     public void onUpdateReceived(Update update) {
         SendMessage m = new SendMessage();
         m.setChatId(update.getMessage().getChatId().toString());
-        /*
-         * if (update.getMessage().getText().equals("test")) {
-         *     InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-         *     List <List< InlineKeyboardButton >> rowsInline = new ArrayList < > ();
-         *     List < InlineKeyboardButton > rowInline = new ArrayList< >();
-         *     InlineKeyboardButton a = new InlineKeyboardButton();
-         *     a.setText("eh si");
-         *     a.setUrl("https://www.google.com");
-         *     rowInline.add(a);
-         *     rowsInline.add(rowInline);
-         *     markupInline.setKeyboard(rowsInline);
-         *     m.setReplyMarkup(markupInline);
-         * }
-         * */
-        m.setText("Buon pomeriggio!");
+        m.setText("Buon pomeriggio! Sono quel porco di dio.");
+
         try {
             execute(m);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getMenu(){
+
     }
 }
