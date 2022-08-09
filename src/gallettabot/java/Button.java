@@ -6,18 +6,8 @@ public class Button extends InlineKeyboardButton {
 
     public Button(String title){
         super();
-        InlineKeyboardButton a = new InlineKeyboardButton();
-        super.setText(title);
-
+        this.setText(title);
+        this.setCallbackData("j");
     }
 
-/*
- *     InlineKeyboardButton a = new InlineKeyboardButton();
- *     a.setText("eh si");
- *     a.setUrl("https://www.google.com");
- *     rowInline.add(a);
- *     rowsInline.add(rowInline);
- *     markupInline.setKeyboard(rowsInline);
- *     m.setReplyMarkup(markupInline);
- */
 }
