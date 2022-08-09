@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu context="main">
+    <label id="0" name="📝 FAQ" enabled="1">
+        <menu context="FAQ">
+
+        </menu>
+    </label>
+    <label id="1" name="❓ Fai una domanda" enabled="1">
+
+    </label>
+    <label id="2" name="🗓 Richiedi Appuntamento" enabled="1">
+
+    </label>
+</menu>
