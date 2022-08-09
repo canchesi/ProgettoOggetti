@@ -1,4 +1,4 @@
-package src.gallettabot.java.menus;
+package src.gallettabot.java;
 
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;

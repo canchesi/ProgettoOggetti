@@ -1,4 +1,7 @@
-package src.gallettabot.java;
+package src.gallettabot.java.menus;
+
+import src.gallettabot.java.Button;
+import src.gallettabot.java.DatabaseClient;
 
 import java.util.ArrayList;
 import java.util.List;
