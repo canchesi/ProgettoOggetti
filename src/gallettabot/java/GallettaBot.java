@@ -1,23 +1,9 @@
 package src.gallettabot.java;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
-import org.bson.codecs.jsr310.LocalTimeCodec;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.w3c.dom.Element;
-import src.gallettabot.java.menus.Menu;
 
-import java.time.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
 
 
 public class GallettaBot extends TelegramLongPollingBot{
@@ -45,15 +31,19 @@ public class GallettaBot extends TelegramLongPollingBot{
     public void onUpdateReceived(Update update) {
 
         MessageHandler handler = new MessageHandler(client, update);
-
+        SendMessage message = null;
         try {
-            SendMessage message = handler.handleRequest();
-            execute(message);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        } //catch (EccezioneFattaDaNoi e) {
-          //da vedere
-         //}
+            message = handler.handleRequest();
+        } catch (UnexpectedRequestException e) {
+            message = handler.handleAutoRequest("/restart");
+        } finally {
+            try {
+                execute(message);
+            } catch (TelegramApiException e) {
+                //TODO Potrebbe scrivere un log perché tanto telegram non funziona
+                e.printStackTrace();
+            }
+        }
     }
 
 }

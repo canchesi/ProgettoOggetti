@@ -4,10 +4,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 public class Button extends InlineKeyboardButton {
 
-    public Button(String title){
+    public Button(String title, String callback){
         super();
-        this.setText(title);
-        this.setCallbackData("j");
+        super.setText(title);
+        super.setCallbackData(callback);
     }
 
 }
