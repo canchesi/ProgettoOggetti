@@ -17,11 +17,9 @@ public class MainMenu extends Menu{
         byte i = 0;
         super.setTextToPrint("Seleziona la materia di interesse");
         try{
-
-            Document subj = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menu").find(new Document("name", "subjects")).first();
+            Document subj = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "subjects")).first();
             for (String sub : (List<String>) subj.get("subjects"))
                 this.getAllButtons().add(new ArrayList<>(List.of(new Button(sub, String.valueOf(i++)))));
-
         } catch (NullPointerException npe) {
             return null;
         }

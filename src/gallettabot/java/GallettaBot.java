@@ -2,6 +2,7 @@ package src.gallettabot.java;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import src.gallettabot.java.exceptions.UnexpectedRequestException;
@@ -37,10 +38,11 @@ public class GallettaBot extends TelegramLongPollingBot{
         try {
             message = handler.handleRequest(handler.checkAndGetMessage(update));
         } catch (UnexpectedRequestException e) {
-            message = handler.handleRequest("/restart");
+            message = handler.handleRequest(handler.checkAndGetMessage("/start"));
         } finally {
             try {
-                execute(message);
+                int a = execute(message).getMessageId();
+                System.out.println("bot:" +a);
             } catch (TelegramApiException e) {
                 //TODO Potrebbe scrivere un log perché tanto telegram non funziona
                 e.printStackTrace();

@@ -19,13 +19,13 @@ public class CommonMenu extends Menu {
     public Menu generateButtons() {
         this.setTextToPrint("Seleziona la funzionalità");
         try{
-            Map<String, String> func = (Map<String, String>) super.getClient().getMongo().getDatabase("gallettabot").getCollection("menu").find(new Document("name", "commonMenu")).first().get("functionalities");
+            Map<String, String> func = (Map<String, String>) super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "commonMenu")).first().get("functionalities");
             Set<String> keys = func.keySet();
             Collection<String> values = func.values();
             ArrayList<Iterator<String>> iterators = new ArrayList<>(Arrays.asList(keys.iterator(), values.iterator()));
             while (iterators.get(0).hasNext())
-                this.getAllButtons().add(new ArrayList<>(List.of(new Button(iterators.get(1).next(), "{name="+iterators.get(0).next()+", subj="+this.subject+"}"))));
-            this.getAllButtons().add(new ArrayList<>(List.of(new Button("Torna all'inizio", "/restart"))));
+                this.getAllButtons().add(new ArrayList<>(List.of(new Button(iterators.get(1).next(), "name="+iterators.get(0).next()+",subj="+this.subject))));
+            this.getAllButtons().add(new ArrayList<>(List.of(new Button("⬆️️️ Torna all'inizio", "/restart"))));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -40,5 +40,9 @@ public class CommonMenu extends Menu {
     @Override
     public List<List<Button>> getAllButtons() {
         return super.getAllButtons();
+    }
+
+    public String getSubject() {
+        return this.subject;
     }
 }

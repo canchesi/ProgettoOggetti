@@ -7,12 +7,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import src.gallettabot.java.exceptions.*;
 import src.gallettabot.java.menus.*;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MessageHandler {
 
     private final SendMessage response;
     private final DatabaseClient client;
+    private boolean isAcceptable;
     private Menu menu;
 
 
@@ -20,22 +24,30 @@ public class MessageHandler {
         this.client = client;
         this.response = new SendMessage();
         this.response.setText("Richiesta errata");
+        this.isAcceptable = false;
     }
 
     public SendMessage handleRequest(String request) throws UnexpectedRequestException {
-        try{
-            switch (messageType(request)){
-                case 0 -> handleCommand(request);
-                case 1 -> handleSubject(Byte.parseByte(request));
-                case 2 -> handleSubmenu(request);
-                default -> throw new UnexpectedRequestException();
+        if(this.isAcceptable) {
+            try {
+                switch (messageType(request)) {
+                    case 0 -> handleCommand(request);
+                    case 1 -> handleSubject(Byte.parseByte(request));
+                    case 2 -> {
+                        return printMessage(request);
+                    }
+                    case 3 -> handleSubmenu(request);
+                    default -> throw new UnexpectedRequestException();
+                }
+            } catch (UnexpectedCommandException | UnexpectedSubjectException ignored) {
+                throw new UnexpectedRequestException();
             }
-        } catch (UnexpectedCommandException | UnexpectedSubjectException ignored) {
+            setResponse();
+
+            return this.response;
+        } else {
             throw new UnexpectedRequestException();
         }
-        setResponse();
-
-        return this.response;
     }
 
     private void handleCommand(String handledCase) throws UnexpectedCommandException {
@@ -47,7 +59,7 @@ public class MessageHandler {
 
     private void handleSubject(byte handledCase) throws UnexpectedSubjectException {
 
-        int subjectSize = ((List<String>)this.client.getMongo().getDatabase("gallettabot").getCollection("menu").find(new Document("name", "subjects")).first().get("subjects")).size();
+        int subjectSize = ((List<String>)this.client.getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "subjects")).first().get("subjects")).size();
         if (handledCase < 0 || handledCase >= subjectSize)
             throw new UnexpectedSubjectException();
         else
@@ -55,7 +67,26 @@ public class MessageHandler {
     }
 
     private void handleSubmenu(String handledCase) throws UnexpectedSubmenuException {
-        //TODO Submenus
+        Map<String, String> request = new HashMap<>();
+        String[] parsedHandledCase = handledCase.split(",");
+
+        for (String field: parsedHandledCase) {
+            String[] toBeInserted = field.split("=");
+            request.put(toBeInserted[0], toBeInserted[1]);
+        }
+
+        switch (request.get("name")){
+            case "faq" -> this.menu = new FAQMenu(client, request.get("subj"));
+            case "quest" -> this.menu = new QuestionMenu(client, request.get("subj"));
+            case "appointment" -> this.menu = new AppointmentMenu(client, request.get("subj"));
+            default -> throw new UnexpectedSubmenuException();
+        }
+
+    }
+
+    private SendMessage printMessage(String request) {
+        this.response.setText(request.split("=")[1]);
+        return this.response;
     }
 
     private void setResponse() {
@@ -69,20 +100,31 @@ public class MessageHandler {
             return 0;
         else if (Utilities.isByte(receivedMessage))
             return 1;
-        else
+        else if (receivedMessage.startsWith("ans="))
             return 2;
+        else
+            return 3;
     }
 
     public String checkAndGetMessage(Update update) {
         String receivedMessage;
-        if (!update.hasCallbackQuery()) {
+        this.isAcceptable = update.hasCallbackQuery();
+        if (!this.isAcceptable) {
             receivedMessage = update.getMessage().getText();
             this.response.setChatId(update.getMessage().getChatId());
+            if (receivedMessage.equals("/start"))
+                this.isAcceptable = true;
         } else {
             receivedMessage = update.getCallbackQuery().getData();
             this.response.setChatId(update.getCallbackQuery().getMessage().getChatId());
         }
         return receivedMessage;
+    }
+
+    public String checkAndGetMessage(String message) {
+        if (message.equals("/start") || message.equals("/restart"))
+            this.isAcceptable = true;
+        return message;
     }
 
 
