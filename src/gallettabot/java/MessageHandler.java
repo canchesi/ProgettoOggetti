@@ -4,9 +4,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import src.gallettabot.java.menus.CommonMenu;
-import src.gallettabot.java.menus.MainMenu;
-import src.gallettabot.java.menus.Menu;
+import src.gallettabot.java.menus.*;
 import java.util.List;
 
 public class MessageHandler {
@@ -23,30 +21,37 @@ public class MessageHandler {
     }
 
     public SendMessage handleRequest(String request) throws UnexpectedRequestException {
+        //try{
         switch (messageType(request)){
             case 0 -> handleCommand(request);
             case 1 -> handleSubject(request);
             case 2 -> handleSubmenu(request);
             default -> throw new UnexpectedRequestException();
-        }
+        }//} catch (Varie exceptions) {}
         setResponse();
 
         return this.response;
     }
 
-    private void handleSubmenu(String handledCase) {
-        //TODO Submenus
-    }
-
-    private void handleSubject(String handledCase) {
-        this.menu = new CommonMenu(client, handledCase);
-    }
-
-    public void handleCommand(String message) throws UnexpectedRequestException {
-        switch (message) {
+    private void handleCommand(String handledCase) {//throws UnexpectedRequestException {
+        switch (handledCase) {
             case "/start", "/restart" -> this.menu = new MainMenu(this.client);
-            default -> throw new UnexpectedRequestException();
+            //default -> throw new UnexpectedCommandException();
         }
+    }
+
+    private void handleSubject(String handledCase) { //throws UnexpectedSubjectException {
+
+        //int subjectSize = ((List<String>)this.client.getMongo().getDatabase("gallettabot").getCollection("menu").find(new Document("name", "subjects")).first().get("subjects")).size();
+        //if (handledCase > 0 && handledCase < subjectSize)
+            this.menu = new CommonMenu(client, handledCase);
+        //else
+        //    throw UnexpectedSubjectException
+
+    }
+
+    private void handleSubmenu(String handledCase) { //throws UnexpectedSubmenuException {
+        //TODO Submenus
     }
 
     private void setResponse() {
@@ -55,7 +60,7 @@ public class MessageHandler {
         this.response.setReplyMarkup(markup);
     }
 
-    private static byte messageType(String receivedMessage) {
+    private byte messageType(String receivedMessage) {
         if (Utilities.isCommand(receivedMessage))
             return 0;
         else if (Utilities.isByte(receivedMessage))
