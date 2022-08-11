@@ -1,4 +1,4 @@
-package src.gallettabot.java;
+package src.gallettabot.java.exceptions;
 
 public class UnexpectedRequestException extends RuntimeException{
 
