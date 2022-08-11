@@ -1,4 +1,5 @@
 package src.gallettabot.java;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,7 +20,7 @@ public class GallettaBot extends TelegramLongPollingBot{
 
     @Override
     public String getBotUsername() {
-        return "GallettaBot a disposizione!\n";
+        return "GallettaBot";
     }
 
     @Override
@@ -30,12 +31,13 @@ public class GallettaBot extends TelegramLongPollingBot{
     @Override
     public void onUpdateReceived(Update update) {
 
-        MessageHandler handler = new MessageHandler(client, update);
+        MessageHandler handler = new MessageHandler(client);
         SendMessage message = null;
+
         try {
-            message = handler.handleRequest();
+            message = handler.handleRequest(handler.checkAndGetMessage(update));
         } catch (UnexpectedRequestException e) {
-            message = handler.handleAutoRequest("/restart");
+            message = handler.handleRequest("/restart");
         } finally {
             try {
                 execute(message);

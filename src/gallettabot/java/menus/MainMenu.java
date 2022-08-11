@@ -14,17 +14,16 @@ public class MainMenu extends Menu{
 
     @Override
     public MainMenu generateButtons() {
-        if (super.getUpperMenu().isEmpty()) {
-            byte i = 0;
-            try{
-                Document subj = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menu").find(new Document("name", "subjects")).first();
-                for (String sub : (List<String>) subj.get("subjects"))
-                    this.getAllButtons().add(new ArrayList<>(List.of(new Button(sub, String.valueOf(i++)))));
+        byte i = 0;
+        super.setTextToPrint("Seleziona la materia di interesse");
+        try{
 
-                this.getAllButtons().add(new ArrayList<>(List.of(new Button("Torna all'inizio", "/restart"))));
-            } catch (NullPointerException npe) {
-                return null;
-            }
+            Document subj = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menu").find(new Document("name", "subjects")).first();
+            for (String sub : (List<String>) subj.get("subjects"))
+                this.getAllButtons().add(new ArrayList<>(List.of(new Button(sub, String.valueOf(i++)))));
+
+        } catch (NullPointerException npe) {
+            return null;
         }
         return this;
     }
@@ -35,8 +34,3 @@ public class MainMenu extends Menu{
     }
 
 }
-/*
-*
-
-*
-* */
