@@ -8,34 +8,34 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import src.gallettabot.java.exceptions.*;
 import src.gallettabot.java.menus.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MessageHandler {
 
     private final SendMessage response;
     private final DatabaseClient client;
+    private Object messageId;
     private boolean isAcceptable;
+    private boolean isDeleteble;
     private Menu menu;
 
 
     public MessageHandler(DatabaseClient client) {
         this.client = client;
         this.response = new SendMessage();
-        this.response.setText("Richiesta errata");
         this.isAcceptable = false;
+        this.isDeleteble = false;
+        this.messageId = null;
     }
 
     public SendMessage handleRequest(String request) throws UnexpectedRequestException {
         if(this.isAcceptable) {
+
             try {
                 switch (messageType(request)) {
                     case 0 -> handleCommand(request);
                     case 1 -> handleSubject(Byte.parseByte(request));
-                    case 2 -> {
-                        return printMessage(request);
-                    }
+                    case 2 -> handleFAQAnswerMenu(request);
                     case 3 -> handleSubmenu(request);
                     default -> throw new UnexpectedRequestException();
                 }
@@ -55,6 +55,8 @@ public class MessageHandler {
             case "/start", "/restart" -> this.menu = new MainMenu(this.client);
             default -> throw new UnexpectedCommandException();
         }
+        if (this.messageId != null)
+            this.isDeleteble = true;
     }
 
     private void handleSubject(byte handledCase) throws UnexpectedSubjectException {
@@ -84,9 +86,8 @@ public class MessageHandler {
 
     }
 
-    private SendMessage printMessage(String request) {
-        this.response.setText(request.split("=")[1]);
-        return this.response;
+    private void handleFAQAnswerMenu (String handledCase) {
+        this.menu = new FAQAnswerMenu(client, handledCase);
     }
 
     private void setResponse() {
@@ -100,7 +101,7 @@ public class MessageHandler {
             return 0;
         else if (Utilities.isByte(receivedMessage))
             return 1;
-        else if (receivedMessage.startsWith("ans="))
+        else if (receivedMessage.startsWith("quest="))
             return 2;
         else
             return 3;
@@ -112,8 +113,7 @@ public class MessageHandler {
         if (!this.isAcceptable) {
             receivedMessage = update.getMessage().getText();
             this.response.setChatId(update.getMessage().getChatId());
-            if (receivedMessage.equals("/start"))
-                this.isAcceptable = true;
+            this.messageId = update.getMessage().getMessageId();
         } else {
             receivedMessage = update.getCallbackQuery().getData();
             this.response.setChatId(update.getCallbackQuery().getMessage().getChatId());
@@ -127,5 +127,11 @@ public class MessageHandler {
         return message;
     }
 
+    public boolean isDeleteble() {
+        return isDeleteble;
+    }
 
+    public int getMessageId() {
+        return (int) messageId;
+    }
 }
