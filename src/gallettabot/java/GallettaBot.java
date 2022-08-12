@@ -43,30 +43,38 @@ public class GallettaBot extends TelegramLongPollingBot{
         } catch (UnexpectedRequestException e) {
             message = handler.handleRequest(handler.checkAndGetMessage("/start"));
         } finally {
-
             thisChat = new Chat(client, message.getChatId());
             lastMessageId = thisChat.getLastMessageId();
-            if (lastMessageId != -1) {
-                try{
-                    if (handler.isDeleteble()) {
-                        toBeDeleted = new DeleteMessage(thisChat.getChatId(), handler.getMessageId());
-                        execute(toBeDeleted);
-                    }
-                    toBeDeleted = new DeleteMessage(thisChat.getChatId(), lastMessageId);
+            if (handler.isDeletable()) {
+                toBeDeleted = new DeleteMessage(thisChat.getChatId(), handler.getMessageId());
+                try {
                     execute(toBeDeleted);
                 } catch (TelegramApiException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
+                    thisChat.deleteChat();
+                }
+            }
+            if (lastMessageId != -1) {
+                try{
+                    toBeDeleted = new DeleteMessage(thisChat.getChatId(), lastMessageId);
+                    execute(toBeDeleted);
+                    if (handler.isStoppable()) {
+                        thisChat.deleteChat();
+                    }
+                } catch (TelegramApiException e) {
+                    thisChat.deleteChat();
                 }
             } else {
                 thisChat.createDocument(thisChat.getChatId());
             }
 
-            try {
-                thisChat.setLastMessageIdInDocument(execute(message).getMessageId());
-            } catch (TelegramApiException e) {
-                //TODO Potrebbe scrivere un log perché tanto telegram non funziona
-                e.printStackTrace();
-            }
+            if(!handler.isStoppable())
+                try {
+                    thisChat.setLastMessageIdInDocument(execute(message).getMessageId());
+                } catch (TelegramApiException e) {
+                    //TODO Potrebbe scrivere un log perché tanto telegram non funziona
+                    thisChat.deleteChat();
+                }
         }
     }
 

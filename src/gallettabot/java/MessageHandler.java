@@ -16,21 +16,25 @@ public class MessageHandler {
     private final DatabaseClient client;
     private Object messageId;
     private boolean isAcceptable;
-    private boolean isDeleteble;
+    private boolean isDeletable;
+    private boolean isStoppable;
+    private final ArrayList<String> acceptedCommands;
     private Menu menu;
 
 
     public MessageHandler(DatabaseClient client) {
         this.client = client;
         this.response = new SendMessage();
-        this.isAcceptable = false;
-        this.isDeleteble = false;
+        this.isAcceptable = true;
+        this.isDeletable = false;
         this.messageId = null;
+        this.menu = null;
+        this.isStoppable = false;
+        this.acceptedCommands = new ArrayList<>(Arrays.asList("/start", "/restart", "/stop"));
     }
 
     public SendMessage handleRequest(String request) throws UnexpectedRequestException {
         if(this.isAcceptable) {
-
             try {
                 switch (messageType(request)) {
                     case 0 -> handleCommand(request);
@@ -42,7 +46,8 @@ public class MessageHandler {
             } catch (UnexpectedCommandException | UnexpectedSubjectException ignored) {
                 throw new UnexpectedRequestException();
             }
-            setResponse();
+            if(this.menu != null)
+                setResponse();
 
             return this.response;
         } else {
@@ -53,10 +58,11 @@ public class MessageHandler {
     private void handleCommand(String handledCase) throws UnexpectedCommandException {
         switch (handledCase) {
             case "/start", "/restart" -> this.menu = new MainMenu(this.client);
+            case "/stop" -> this.isStoppable = true;
             default -> throw new UnexpectedCommandException();
         }
         if (this.messageId != null)
-            this.isDeleteble = true;
+            this.isDeletable = true;
     }
 
     private void handleSubject(byte handledCase) throws UnexpectedSubjectException {
@@ -110,8 +116,16 @@ public class MessageHandler {
     public String checkAndGetMessage(Update update) {
         String receivedMessage;
         this.isAcceptable = update.hasCallbackQuery();
+        if (update.getMyChatMember() != null) {
+            this.response.setChatId(update.getMyChatMember().getChat().getId());
+            if (update.getMyChatMember().getNewChatMember().getStatus().equals("kicked"))
+                return "/stop";
+            else
+                return "/start";
+        }
+
         if (!this.isAcceptable) {
-            receivedMessage = update.getMessage().getText();
+            receivedMessage = checkAndGetMessage(update.getMessage().getText());
             this.response.setChatId(update.getMessage().getChatId());
             this.messageId = update.getMessage().getMessageId();
         } else {
@@ -122,13 +136,17 @@ public class MessageHandler {
     }
 
     public String checkAndGetMessage(String message) {
-        if (message.equals("/start") || message.equals("/restart"))
+        if (this.acceptedCommands.contains(message))
             this.isAcceptable = true;
         return message;
     }
 
-    public boolean isDeleteble() {
-        return isDeleteble;
+    public boolean isDeletable() {
+        return isDeletable;
+    }
+
+    public boolean isStoppable() {
+        return isStoppable;
     }
 
     public int getMessageId() {

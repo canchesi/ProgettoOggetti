@@ -17,19 +17,17 @@ public class FAQMenu extends CommonMenu {
     public Menu generateButtons() {
         this.setTextToPrint("Seleziona una domanda");
         try{
-            Map<String, Object> faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find((new Document("name", "faq")).append("subj", Byte.parseByte(this.getSubject()))).first();
+            Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find((new Document("name", "faq")).append("subj", Byte.parseByte(this.getSubject()))).first();
             if (faq != null) {
-                faq = (Map<String, Object>) faq.get("questions");
-                for (Object current : faq.values()) {
+                faq = ((Map<String, String>) faq).get("questions");
+                for (Object current : (ArrayList) faq) {
                     Iterator<Object> currentIterators = ((Document) current).values().iterator();
                     while (currentIterators.hasNext()) {
-                        ArrayList<String> text = new ArrayList<>(Arrays.asList(currentIterators.next().toString()));
-                        String maybeUrl = currentIterators.next().toString();
-                        if (maybeUrl.startsWith("http://") || maybeUrl.startsWith("https://"))
-                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), new URL(maybeUrl)))));
+                        ArrayList<String> text = new ArrayList<>(Arrays.asList(currentIterators.next().toString(), currentIterators.next().toString()));
+                        if (text.get(1).startsWith("http://") || text.get(1).startsWith("https://"))
+                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), new URL(text.get(1))))));
                         else {
-                            text.add("\n\nRisposta:\n" + maybeUrl);
-                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), "quest=Domanda:\n" + text.get(0) + text.get(1)))));
+                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), "quest=Domanda:\n" + text.get(0) + "\n\nRisposta:\n" + text.get(1)))));
                         }
                     }
                 }

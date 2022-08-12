@@ -34,5 +34,8 @@ public class Chat {
         client.getMongo().getDatabase("gallettabot").getCollection("chats").updateOne(whichDocument, update);
     }
 
+    public void deleteChat() {
+        client.getMongo().getDatabase("gallettabot").getCollection("chats").deleteOne(new Document("chatId", this.chatId));
+    }
 
 }
