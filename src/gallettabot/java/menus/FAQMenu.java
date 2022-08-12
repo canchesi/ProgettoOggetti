@@ -4,6 +4,7 @@ import org.bson.Document;
 import src.gallettabot.java.Button;
 import src.gallettabot.java.DatabaseClient;
 
+import java.net.URL;
 import java.util.*;
 
 public class FAQMenu extends CommonMenu {
@@ -23,8 +24,13 @@ public class FAQMenu extends CommonMenu {
                     Iterator<Object> currentIterators = ((Document) current).values().iterator();
                     while (currentIterators.hasNext()) {
                         ArrayList<String> text = new ArrayList<>(Arrays.asList(currentIterators.next().toString()));
-                        text.add("\n\nRisposta:\n" + currentIterators.next().toString());
-                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), "quest=Domanda:\n" + text.get(0) + text.get(1)))));
+                        String maybeUrl = currentIterators.next().toString();
+                        if (maybeUrl.startsWith("http://") || maybeUrl.startsWith("https://"))
+                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), new URL(maybeUrl)))));
+                        else {
+                            text.add("\n\nRisposta:\n" + maybeUrl);
+                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(text.get(0), "quest=Domanda:\n" + text.get(0) + text.get(1)))));
+                        }
                     }
                 }
             }
