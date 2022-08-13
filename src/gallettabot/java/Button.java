@@ -1,7 +1,6 @@
 package src.gallettabot.java;
 
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
 import java.net.URL;
 
 public class Button extends InlineKeyboardButton {

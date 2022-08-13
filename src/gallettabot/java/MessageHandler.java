@@ -107,7 +107,7 @@ public class MessageHandler {
             return 0;
         else if (Utilities.isByte(receivedMessage))
             return 1;
-        else if (receivedMessage.startsWith("quest="))
+        else if (receivedMessage.startsWith("quest:"))
             return 2;
         else
             return 3;

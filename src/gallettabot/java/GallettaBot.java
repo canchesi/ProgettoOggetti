@@ -73,7 +73,7 @@ public class GallettaBot extends TelegramLongPollingBot{
                     thisChat.setLastMessageIdInDocument(execute(message).getMessageId());
                 } catch (TelegramApiException e) {
                     //TODO Potrebbe scrivere un log perché tanto telegram non funziona
-                    thisChat.deleteChat();
+                    //thisChat.deleteChat();
                 }
         }
     }
