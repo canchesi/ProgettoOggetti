@@ -7,6 +7,8 @@ import src.gallettabot.java.DatabaseClient;
 import java.net.URL;
 import java.util.*;
 
+import static src.gallettabot.java.Utilities.isLink;
+
 public class FAQMenu extends CommonMenu {
 
     public FAQMenu(DatabaseClient client, String subject) {
@@ -27,7 +29,7 @@ public class FAQMenu extends CommonMenu {
                     while (currentIterators.hasNext()) {
                         String question = currentIterators.next().toString();
                         String answer = currentIterators.next().toString();
-                        if (answer.startsWith("http://") || answer.startsWith("https://"))
+                        if (isLink(answer))
                             this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, new URL(answer)))));
                         else {
                             this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, "quest:name=faq,subj="+this.getSubject()+",q="+i++))));

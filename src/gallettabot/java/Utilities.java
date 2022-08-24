@@ -15,4 +15,8 @@ public class Utilities {
         return str.startsWith("/");
     }
 
+    public static boolean isLink(String str) {
+        return str.startsWith("https://") || str.startsWith("http://");
+    }
+
 }

@@ -1,11 +1,9 @@
 package src.gallettabot.java.menus;
 
 import org.bson.Document;
-import org.checkerframework.checker.units.qual.A;
 import src.gallettabot.java.Button;
 import src.gallettabot.java.DatabaseClient;
 
-import javax.print.Doc;
 import java.util.*;
 
 public class FAQAnswerMenu extends Menu{
