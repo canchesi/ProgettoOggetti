@@ -9,17 +9,20 @@ import java.util.*;
 
 import static src.gallettabot.java.Utilities.isLink;
 
-public class FAQMenu extends CommonMenu {
+public class FAQMenu extends SubjectMenu {
 
-    public FAQMenu(DatabaseClient client, String subject) {
-        super(client, subject);
+    private byte subject;
+
+    public FAQMenu(DatabaseClient client, byte subject) {
+        super(client);
+        this.subject = subject;
     }
 
     @Override
     public Menu generateButtons() {
         this.setTextToPrint("Seleziona una domanda");
         try{
-            Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find((new Document("name", "faq")).append("subj", Byte.parseByte(this.getSubject()))).first();
+            Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find((new Document("name", "faq")).append("subj", this.getSubject())).first();
             if (faq != null) {
                 faq = ((Map<String, String>) faq).get("questions");
                 System.out.println(faq);
@@ -43,4 +46,9 @@ public class FAQMenu extends CommonMenu {
         }
         return this;
     }
+
+    public byte getSubject() {
+        return subject;
+    }
+
 }

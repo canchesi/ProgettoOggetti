@@ -44,7 +44,12 @@ public class GallettaBot extends TelegramLongPollingBot{
             message = handler.handleRequest(handler.checkAndGetMessage("/start"));
         } finally {
             thisChat = new Chat(client, message.getChatId());
-            lastMessageId = thisChat.getLastMessageId();
+            try{
+                lastMessageId = thisChat.getLastMessageId();
+            } catch (NullPointerException ignored) {
+                thisChat.deleteChat();
+                lastMessageId = -1;
+            }
             if (handler.isDeletable()) {
                 toBeDeleted = new DeleteMessage(thisChat.getChatId(), handler.getMessageId());
                 try {

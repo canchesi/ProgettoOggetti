@@ -1,6 +1,5 @@
 package src.gallettabot.java;
 
-import org.bson.Document;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -38,12 +37,12 @@ public class MessageHandler {
             try {
                 switch (messageType(request)) {
                     case 0 -> handleCommand(request);
-                    case 1 -> handleSubject(Byte.parseByte(request));
-                    case 2 -> handleFAQAnswerMenu(request);
-                    case 3 -> handleSubmenu(request);
+                    case 1 -> handleSubjectMenu();
+                    case 2 -> handelFAQMenu(request);
+                    case 3 -> handleFAQAnswerMenu(request);
                     default -> throw new UnexpectedRequestException();
                 }
-            } catch (UnexpectedCommandException | UnexpectedSubjectException ignored) {
+            } catch (UnexpectedCommandException | UnexpectedFunctionalityException ignored) {
                 throw new UnexpectedRequestException();
             }
             if(this.menu != null)
@@ -65,31 +64,12 @@ public class MessageHandler {
             this.isDeletable = true;
     }
 
-    private void handleSubject(byte handledCase) throws UnexpectedSubjectException {
-
-        int subjectSize = ((List<String>)this.client.getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "subjects")).first().get("subjects")).size();
-        if (handledCase < 0 || handledCase >= subjectSize)
-            throw new UnexpectedSubjectException();
-        else
-            this.menu = new CommonMenu(client, String.valueOf(handledCase));
+    private void handleSubjectMenu() {
+        this.menu = new SubjectMenu(client);
     }
 
-    private void handleSubmenu(String handledCase) throws UnexpectedSubmenuException {
-        Map<String, String> request = new HashMap<>();
-        String[] parsedHandledCase = handledCase.split(",");
-
-        for (String field: parsedHandledCase) {
-            String[] toBeInserted = field.split("=");
-            request.put(toBeInserted[0], toBeInserted[1]);
-        }
-
-        switch (request.get("name")){
-            case "faq" -> this.menu = new FAQMenu(client, request.get("subj"));
-            case "quest" -> this.menu = new QuestionMenu(client, request.get("subj"));
-            case "appointment" -> this.menu = new AppointmentMenu(client, request.get("subj"));
-            default -> throw new UnexpectedSubmenuException();
-        }
-
+    private void handelFAQMenu(String handledCase) throws UnexpectedSubmenuException {
+        this.menu = new FAQMenu(client, Byte.parseByte(handledCase.split("=")[1]));
     }
 
     private void handleFAQAnswerMenu (String handledCase) {
@@ -105,12 +85,14 @@ public class MessageHandler {
     private byte messageType(String receivedMessage) {
         if (Utilities.isCommand(receivedMessage))
             return 0;
-        else if (Utilities.isByte(receivedMessage))
+        else if (receivedMessage.equals("faq"))
             return 1;
-        else if (receivedMessage.startsWith("quest:"))
+        else if (receivedMessage.startsWith("subj="))
             return 2;
-        else
+        else if (receivedMessage.startsWith("quest:"))
             return 3;
+
+        return -1;
     }
 
     public String checkAndGetMessage(Update update) {
@@ -118,6 +100,7 @@ public class MessageHandler {
         this.isAcceptable = update.hasCallbackQuery();
         if (update.getMyChatMember() != null) {
             this.response.setChatId(update.getMyChatMember().getChat().getId());
+            this.isAcceptable = true;
             if (update.getMyChatMember().getNewChatMember().getStatus().equals("kicked"))
                 return "/stop";
             else

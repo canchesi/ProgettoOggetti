@@ -3,8 +3,9 @@ package src.gallettabot.java.menus;
 import org.bson.Document;
 import src.gallettabot.java.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 public class MainMenu extends Menu{
 
@@ -14,13 +15,20 @@ public class MainMenu extends Menu{
 
     @Override
     public MainMenu generateButtons() {
-        byte i = 0;
-        super.setTextToPrint("Seleziona la materia di interesse");
+        super.setTextToPrint("Seleziona la funzionalità");
         try{
-            Document subj = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "subjects")).first();
-            for (String sub : (List<String>) subj.get("subjects"))
-                this.getAllButtons().add(new ArrayList<>(List.of(new Button(sub, String.valueOf(i++)))));
-        } catch (NullPointerException npe) {
+            Document document = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "functionalities")).first();
+            System.out.println(document);
+            if (document != null) {
+                ArrayList<Map<String, String>> functs = (ArrayList<Map<String, String>>) document.get("functs");
+                System.out.println(functs);
+                for (Map<String, String> func: functs)
+                    if (func.containsKey("link"))
+                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), new URL(func.get("link"))))));
+                    else
+                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), func.get("callback")))));
+            }
+        } catch (NullPointerException | MalformedURLException npe) {
             return null;
         }
         return this;
