@@ -8,6 +8,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class Main {
     public static void main(String[] args) {
 
+        // Avvio del bot per mezzo delle API importate.
+
         try {
             TelegramBotsApi telegram = new TelegramBotsApi(DefaultBotSession.class);
             telegram.registerBot(new GallettaBot());

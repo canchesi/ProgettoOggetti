@@ -7,10 +7,16 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import src.gallettabot.java.exceptions.UnexpectedRequestException;
 
-
+/*
+    Bisogna estendere la classe TelegramLongPollingBot per poter creare e gestire il backend del bot.
+    È obbligatorio dover fare l'override di tre metodi: getBotUsername(), getBotToken() e onUpdateReceived().
+ */
 public class GallettaBot extends TelegramLongPollingBot{
 
+    // L'oggetto config contiene le informazioni di base tramite lettura del file config.xml.
     private final Config config;
+    /* L'oggetto client contiene i metodi per la connessione al database e ritorna la connessione stessa ottenuta
+       tramite le API ufficiali di Mongo per Java. */
     private final DatabaseClient client;
 
     public GallettaBot(){
@@ -31,6 +37,12 @@ public class GallettaBot extends TelegramLongPollingBot{
 
     @Override
     public void onUpdateReceived(Update update) {
+
+        /*
+
+
+
+         */
 
         MessageHandler handler = new MessageHandler(client);
         SendMessage message = null;

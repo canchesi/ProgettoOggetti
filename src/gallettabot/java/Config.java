@@ -1,14 +1,16 @@
 package src.gallettabot.java;
 
-import org.checkerframework.checker.units.qual.A;
 import org.w3c.dom.*;
-
 import java.util.*;
 
 public class Config{
 
+    // L'oggetto token il token per la connessione alle api di Telegram
     private final String token;
+    // mongoCredentials è
     private final Map<String, String> mongoCredentials;
+
+    
     public Config(String path){
 
         XMLReader config = new XMLReader(path);
