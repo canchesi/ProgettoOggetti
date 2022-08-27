@@ -1,23 +1,27 @@
 package src.gallettabot.java;
 
-import org.checkerframework.checker.units.qual.A;
 import org.w3c.dom.*;
-
 import java.util.*;
 
 public class Config{
 
+    // L'oggetto token il token per la connessione alle api di Telegram.
     private final String token;
+    /* mongoCredentials è una Hashmap che contiene le informazioni fondamentali per la
+       connessione al database. */
     private final Map<String, String> mongoCredentials;
+
+    
     public Config(String path){
 
-        XMLReader config = new XMLReader(path);
         mongoCredentials = new HashMap<>();
-        NodeList database = ((Element) config.getDoc()
+        // reader è un oggetto che fornisce i metodi base per l'accesso e la lettura ai file XML.
+        XMLReader reader = new XMLReader(path);
+        NodeList database = ((Element) reader.getDoc()
                 .getElementsByTagName("config").item(0))
                 .getElementsByTagName("database");
 
-        token = ((Element)((Element) config.getDoc().getElementsByTagName("config").item(0))
+        token = ((Element)((Element) reader.getDoc().getElementsByTagName("config").item(0))
                     .getElementsByTagName("telegram-api").item(0))
                     .getElementsByTagName("token").item(0)
                     .getTextContent();
@@ -41,7 +45,6 @@ public class Config{
     }
 
     public String getToken() {
-
         return token;
     }
 }

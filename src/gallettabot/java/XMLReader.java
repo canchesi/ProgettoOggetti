@@ -8,15 +8,19 @@ import java.io.*;
 public class XMLReader {
 
     private final File parsingFile;
+    // L'oggetto doc rappresenta il file XML già parsificato tramite i metodi del pacchetto DOM.
     private final Document doc;
 
     public XMLReader(String path){
         try{
             this.parsingFile = new File(path);
+            /* Per il parsing del file XML, DOM mette a disposizione una classe DocumentBuilder istanziabile tramite
+               una DocumentBuilderFactory. Il DocumentBuilder effettua il parsing tramite il metodo parse().
+             */
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder parser = dbf.newDocumentBuilder();
             this.doc = parser.parse(getParsingFile());
-        } catch (ParserConfigurationException | IOException | SAXException | NullPointerException e) {
+        } catch (ParserConfigurationException | IOException | NullPointerException | SAXException e) {
             throw new RuntimeException(e);
         }
 
@@ -32,13 +36,6 @@ public class XMLReader {
 
     public Document getDoc() {
         return doc;
-    }
-
-    //-------------------------------
-    public static void main(String[] args) {
-        XMLReader prova = new XMLReader("src/gallettabot/config/config.xml");
-        System.out.println(prova.getParsingFileAbs());
-        System.out.println(prova.getParsingFile());
     }
 
 }
