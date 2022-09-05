@@ -11,7 +11,7 @@ import static src.gallettabot.java.Utilities.isLink;
 
 public class FAQMenu extends SubjectMenu {
 
-    private byte subject;
+    private final byte subject;
 
     public FAQMenu(DatabaseClient client, byte subject) {
         super(client);

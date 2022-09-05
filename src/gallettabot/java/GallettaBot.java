@@ -11,7 +11,7 @@ import src.gallettabot.java.exceptions.UnexpectedRequestException;
     Bisogna estendere la classe TelegramLongPollingBot per poter creare e gestire il backend del bot.
     È obbligatorio dover fare l'override di tre metodi: getBotUsername(), getBotToken() e onUpdateReceived().
  */
-public class GallettaBot extends TelegramLongPollingBot{
+public final class GallettaBot extends TelegramLongPollingBot{
 
     // L'oggetto config contiene le informazioni di base tramite lettura del file config.xml.
     private final Config config;
@@ -73,9 +73,9 @@ public class GallettaBot extends TelegramLongPollingBot{
             }
 
             // Se la richiesta gestita è un messaggio scritto tramite tastiera del client...
-            if (handler.isDeletable()) {
+            if (handler.isBotMessageDeletable()) {
                 // ... questo viene eliminato per pulizia.
-                toBeDeleted = new DeleteMessage(thisChat.getChatId(), handler.getMessageId());
+                toBeDeleted = new DeleteMessage(thisChat.getChatId(), handler.getLastBotSentMessageId());
                 try {
                     execute(toBeDeleted);
                 } catch (TelegramApiException e) {
@@ -92,7 +92,7 @@ public class GallettaBot extends TelegramLongPollingBot{
                     toBeDeleted = new DeleteMessage(thisChat.getChatId(), lastMessageId);
                     execute(toBeDeleted);
                     // Se la richiesta è lo stop del bot, viene eliminato il relativo documento.
-                    if (handler.isStoppable()) {
+                    if (handler.isChatStoppable()) {
                         thisChat.deleteChat();
                     }
                 } catch (TelegramApiException e) {
@@ -105,7 +105,7 @@ public class GallettaBot extends TelegramLongPollingBot{
             }
 
             // Se non è una richiesta di stop del bot...
-            if(!handler.isStoppable())
+            if(!handler.isChatStoppable())
                 // ... viene inserito nel database, o sostituito, il messageId dell'ultimo messaggio del bot.
                 try {
                     thisChat.setLastMessageIdInDocument(execute(message).getMessageId());

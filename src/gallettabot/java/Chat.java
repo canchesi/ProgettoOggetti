@@ -2,7 +2,7 @@ package src.gallettabot.java;
 
 import org.bson.Document;
 
-public class Chat {
+public final class Chat {
 
     private final DatabaseClient client;
     private final String chatId;

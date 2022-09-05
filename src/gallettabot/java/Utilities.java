@@ -1,6 +1,6 @@
 package src.gallettabot.java;
 
-public class Utilities {
+public final class Utilities {
 
     public static boolean isByte(String str) {
         try{

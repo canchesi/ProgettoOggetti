@@ -3,7 +3,7 @@ package src.gallettabot.java;
 import org.w3c.dom.*;
 import java.util.*;
 
-public class Config{
+public final class Config{
 
     // L'oggetto token il token per la connessione alle api di Telegram.
     private final String token;

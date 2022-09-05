@@ -4,7 +4,6 @@ import org.bson.Document;
 import src.gallettabot.java.Button;
 import src.gallettabot.java.DatabaseClient;
 
-import java.net.URL;
 import java.util.*;
 
 public class SubjectMenu extends Menu {

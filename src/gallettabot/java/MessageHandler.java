@@ -9,31 +9,31 @@ import src.gallettabot.java.menus.*;
 
 import java.util.*;
 
-public class MessageHandler {
+public final class MessageHandler {
 
     private final SendMessage response;
     private final DatabaseClient client;
-    private Object messageId;
-    private boolean isAcceptable;
-    private boolean isDeletable;
-    private boolean isStoppable;
     private final ArrayList<String> acceptedCommands;
+    private Object lastBotSentMessageId;
+    private boolean isUserMessageAcceptable;
+    private boolean isBotMessageDeletable;
+    private boolean isChatStoppable;
     private Menu menu;
 
 
     public MessageHandler(DatabaseClient client) {
         this.client = client;
         this.response = new SendMessage();
-        this.isAcceptable = true;
-        this.isDeletable = false;
-        this.messageId = null;
+        this.isUserMessageAcceptable = true;
+        this.isBotMessageDeletable = false;
+        this.lastBotSentMessageId = null;
         this.menu = null;
-        this.isStoppable = false;
+        this.isChatStoppable = false;
         this.acceptedCommands = new ArrayList<>(Arrays.asList("/start", "/restart", "/stop"));
     }
 
     public SendMessage handleRequest(String request) throws UnexpectedRequestException {
-        if(this.isAcceptable) {
+        if(this.isUserMessageAcceptable) {
             try {
                 switch (messageType(request)) {
                     case 0 -> handleCommand(request);
@@ -57,11 +57,11 @@ public class MessageHandler {
     private void handleCommand(String handledCase) throws UnexpectedCommandException {
         switch (handledCase) {
             case "/start", "/restart" -> this.menu = new MainMenu(this.client);
-            case "/stop" -> this.isStoppable = true;
+            case "/stop" -> this.isChatStoppable = true;
             default -> throw new UnexpectedCommandException();
         }
-        if (this.messageId != null)
-            this.isDeletable = true;
+        if (this.lastBotSentMessageId != null)
+            this.isBotMessageDeletable = true;
     }
 
     private void handleSubjectMenu() {
@@ -97,20 +97,20 @@ public class MessageHandler {
 
     public String checkAndGetMessage(Update update) {
         String receivedMessage;
-        this.isAcceptable = update.hasCallbackQuery();
+        this.isUserMessageAcceptable = update.hasCallbackQuery();
         if (update.getMyChatMember() != null) {
             this.response.setChatId(update.getMyChatMember().getChat().getId());
-            this.isAcceptable = true;
+            this.isUserMessageAcceptable = true;
             if (update.getMyChatMember().getNewChatMember().getStatus().equals("kicked"))
                 return "/stop";
             else
                 return "/start";
         }
 
-        if (!this.isAcceptable) {
+        if (!this.isUserMessageAcceptable) {
             receivedMessage = checkAndGetMessage(update.getMessage().getText());
             this.response.setChatId(update.getMessage().getChatId());
-            this.messageId = update.getMessage().getMessageId();
+            this.lastBotSentMessageId = update.getMessage().getMessageId();
         } else {
             receivedMessage = update.getCallbackQuery().getData();
             this.response.setChatId(update.getCallbackQuery().getMessage().getChatId());
@@ -120,19 +120,19 @@ public class MessageHandler {
 
     public String checkAndGetMessage(String message) {
         if (this.acceptedCommands.contains(message))
-            this.isAcceptable = true;
+            this.isUserMessageAcceptable = true;
         return message;
     }
 
-    public boolean isDeletable() {
-        return isDeletable;
+    public boolean isBotMessageDeletable() {
+        return isBotMessageDeletable;
     }
 
-    public boolean isStoppable() {
-        return isStoppable;
+    public boolean isChatStoppable() {
+        return isChatStoppable;
     }
 
-    public int getMessageId() {
-        return (int) messageId;
+    public int getLastBotSentMessageId() {
+        return (int) lastBotSentMessageId;
     }
 }
