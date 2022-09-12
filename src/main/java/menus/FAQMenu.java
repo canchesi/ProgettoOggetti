@@ -1,13 +1,13 @@
-package src.gallettabot.java.menus;
+package src.main.java.menus;
 
 import org.bson.Document;
-import src.gallettabot.java.Button;
-import src.gallettabot.java.DatabaseClient;
+import src.main.java.Button;
+import src.main.java.DatabaseClient;
 
 import java.net.URL;
 import java.util.*;
 
-import static src.gallettabot.java.Utilities.isLink;
+import static src.main.java.Utilities.isLink;
 
 public class FAQMenu extends SubjectMenu {
 

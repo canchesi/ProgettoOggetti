@@ -1,4 +1,4 @@
-package src.gallettabot.java;
+package src.main.java;
 
 import org.bson.Document;
 

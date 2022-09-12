@@ -1,4 +1,4 @@
-package src.gallettabot.java;
+package src.main.java;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;

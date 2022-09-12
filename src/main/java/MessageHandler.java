@@ -1,11 +1,11 @@
-package src.gallettabot.java;
+package src.main.java;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import src.gallettabot.java.exceptions.*;
-import src.gallettabot.java.menus.*;
+import src.main.java.exceptions.*;
+import src.main.java.menus.*;
 
 import java.util.*;
 

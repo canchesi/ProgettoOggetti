@@ -1,11 +1,11 @@
-package src.gallettabot.java;
+package src.main.java;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import src.gallettabot.java.exceptions.UnexpectedRequestException;
+import src.main.java.exceptions.UnexpectedRequestException;
 
 /*
     Bisogna estendere la classe TelegramLongPollingBot per poter creare e gestire il backend del bot.
@@ -21,7 +21,7 @@ public final class GallettaBot extends TelegramLongPollingBot{
 
     public GallettaBot(){
         super();
-        this.config = new Config("src/gallettabot/config/config.xml");
+        this.config = new Config("config.xml");
         this.client = new DatabaseClient(this.config);
     }
 

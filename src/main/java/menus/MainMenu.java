@@ -1,7 +1,7 @@
-package src.gallettabot.java.menus;
+package src.main.java.menus;
 
 import org.bson.Document;
-import src.gallettabot.java.*;
+import src.main.java.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
