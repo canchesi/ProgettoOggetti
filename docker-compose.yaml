@@ -1,0 +1,34 @@
+version: "3.0"
+
+services:
+  mongodb:
+    image: "mongo:latest"
+    container_name: "mongoGallettaBot"
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+    volumes:
+      - "GallettaBotVolume:/data/db"
+    networks:
+      - "default"
+
+  gallettaBot:
+    image: "gallettabot:1.1"
+    container_name: "GallettaBot"
+    environment:
+      MONGO_URL: "mongodb"
+      MONGO_USER: "root"
+      MONGO_PASS: "root"
+    depends_on:
+      - "mongodb"
+    networks:
+      - "default"
+
+    
+volumes:
+  GallettaBotVolume:
+    
+networks:
+  default:

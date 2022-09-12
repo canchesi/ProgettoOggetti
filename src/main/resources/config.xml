@@ -2,12 +2,12 @@
 
 <config>
     <telegram-api>
-        <token>5520286465:AAGfEVNeE4g5cdhIMVBKNhhXXZ8AarzYU-U</token>
+        <token>TOKEN</token>
     </telegram-api>
     <database>
-        <url value="93.40.7.204:27017/?authSource=admin"/>
-        <username value="root"/>
-        <password value="root"/>
+        <url value="URL/?authSource=admin"/>
+        <username value="USER"/>
+        <password value="PASS"/>
     </database>
 </config>
 
