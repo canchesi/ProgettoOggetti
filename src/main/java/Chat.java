@@ -13,6 +13,9 @@ public final class Chat {
     }
 
     public int getLastMessageId() {
+        /* L'oggetto mid (message id), rappresentante l'ultimo messaggio mandato dal bot, viene preso dal database,
+         * se esisttente, altrimenti viene ritornato -1
+         */
         Document mid = this.client.getMongo().getDatabase("gallettabot").getCollection("chats").find((new Document("chatId", this.chatId))).first();
         if (mid != null) {
             return (int) mid.get("messageId");
@@ -25,10 +28,12 @@ public final class Chat {
     }
 
     public void createDocument(String chatId) {
+        // Crea un documento nel database, nella collezione chats, e inserisce il chatId della chat corrente
         client.getMongo().getDatabase("gallettabot").getCollection("chats").insertOne(new Document("chatId", chatId));
     }
 
     public void setLastMessageIdInDocument(int messageId) {
+        // Aggiorna l'ultimo messaggio inviato dal bot
         Document update = new Document("$set", new Document("messageId", messageId));
         Document whichDocument = new Document("chatId", this.chatId);
         client.getMongo().getDatabase("gallettabot").getCollection("chats").updateOne(whichDocument, update);
