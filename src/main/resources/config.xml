@@ -5,9 +5,10 @@
         <token>TOKEN</token>
     </telegram-api>
     <database>
-        <url value="URL/?authSource=admin"/>
+        <url value="URL"/>
         <username value="USER"/>
         <password value="PASS"/>
+        <extra value="EXTRA"/>
     </database>
 </config>
 
