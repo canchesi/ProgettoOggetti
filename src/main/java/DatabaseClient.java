@@ -11,8 +11,8 @@ public final class DatabaseClient {
         String url = config.getMongoCredentials().get("url");
         String username = config.getMongoCredentials().get("username");
         String password = config.getMongoCredentials().get("password");
-        MongoClientURI uri = new MongoClientURI("mongodb://" + username + ":" + password + "@" + url);
-
+        String extra = config.getMongoCredentials().get("extra");
+        MongoClientURI uri = new MongoClientURI("mongodb+srv://" + username + ":" + password + "@" + url + "/" + extra);
         this.mongo = new MongoClient(uri);
 
     }
