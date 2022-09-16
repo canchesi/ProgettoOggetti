@@ -23,6 +23,6 @@ public final class Utilities {
 
     public static boolean isSubjectReq(String str) { return str.startsWith("subj="); }
 
-    public static boolean isQuestionReq(String str) { return str.equals("quest:"); }
+    public static boolean isQuestionReq(String str) { return str.startsWith("quest:"); }
 
 }

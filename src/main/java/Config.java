@@ -25,23 +25,23 @@ public final class Config{
                     .getElementsByTagName("telegram-api").item(0))
                     .getElementsByTagName("token").item(0)
                     .getTextContent();
-        mongoCredentials.put("url", ((Element) database.item(0))
-                                    .getElementsByTagName("url").item(0)
-                                    .getAttributes()
-                                    .getNamedItem("value").getTextContent());
-        mongoCredentials.put("username", ((Element) database.item(0))
-                                    .getElementsByTagName("username").item(0)
-                                    .getAttributes()
-                                    .getNamedItem("value").getTextContent());
-        mongoCredentials.put("password", ((Element) database.item(0))
-                                    .getElementsByTagName("password").item(0)
-                                    .getAttributes()
-                                    .getNamedItem("value").getTextContent());
+        putDatabaseCredential(database, "url");
+        putDatabaseCredential(database, "username");
+        putDatabaseCredential(database, "password");
+        putDatabaseCredential(database, "extra");
+        putDatabaseCredential(database, "prefix");
 
     }
 
     public Map<String, String> getMongoCredentials(){
         return mongoCredentials;
+    }
+
+    private void putDatabaseCredential(NodeList database,String field) {
+        this.mongoCredentials.put(field, ((Element) database.item(0))
+                .getElementsByTagName(field).item(0)
+                .getAttributes()
+                .getNamedItem("value").getTextContent());
     }
 
     public String getToken() {

@@ -25,7 +25,6 @@ public class FAQMenu extends SubjectMenu {
             Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find((new Document("name", "faq")).append("subj", this.getSubject())).first();
             if (faq != null) {
                 faq = ((Map<String, String>) faq).get("questions");
-                System.out.println(faq);
                 byte i = 0;
                 for (Object current : (ArrayList) faq) {
                     Iterator<Object> currentIterators = ((Document) current).values().iterator();

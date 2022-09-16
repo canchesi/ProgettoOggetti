@@ -13,7 +13,7 @@ public class XMLReader {
 
     public XMLReader(String file){
         try{
-            this.parsingFile = new File("classes/"+file);
+            this.parsingFile = new File(file);
             /* Per il parsing del file XML, DOM mette a disposizione una classe DocumentBuilder istanziabile tramite
                una DocumentBuilderFactory. Il DocumentBuilder effettua il parsing tramite il metodo parse().
              */

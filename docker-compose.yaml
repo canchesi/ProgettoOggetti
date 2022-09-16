@@ -15,13 +15,15 @@ services:
   #    - "default"
 
   gallettaBot:
-    image: "klaus:5000/gallettabot:1.2"
+    image: "klaus:5000/gallettabot:1.3"
     container_name: "GallettaBot"
     environment:
-      MONGO_URL: "gallettabotcluster.olrflfi.mongodb.net"
-      MONGO_USER: "galletta"
-      MONGO_PASS: "galletta"
-      MONGO_EXTRA: "?retryWrites=true&w=majority"
+      TELEGRAM_TOKEN: "5520286465:AAGfEVNeE4g5cdhIMVBKNhhXXZ8AarzYU-U"
+      MONGO_URL: "claudioanchesi.ddns.net:27017"
+      MONGO_USER: "root"
+      MONGO_PASS: "root"
+      MONGO_EXTRA: "authSource=admin"
+      MONGO_PREFIX: "mongodb"
         #depends_on:
         #- "mongodb"
     networks:
