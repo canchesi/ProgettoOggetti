@@ -18,10 +18,8 @@ public class MainMenu extends Menu{
         super.setTextToPrint("Seleziona la funzionalità");
         try{
             Document document = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "functionalities")).first();
-            System.out.println(document);
             if (document != null) {
                 ArrayList<Map<String, String>> functs = (ArrayList<Map<String, String>>) document.get("functs");
-                System.out.println(functs);
                 for (Map<String, String> func: functs)
                     if (func.containsKey("link"))
                         this.getAllButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), new URL(func.get("link"))))));

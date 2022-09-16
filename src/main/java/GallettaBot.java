@@ -21,7 +21,7 @@ public final class GallettaBot extends TelegramLongPollingBot{
 
     public GallettaBot(){
         super();
-        this.config = new Config("config.xml");
+        this.config = new Config("src/main/resources/config.xml");
         this.client = new DatabaseClient(this.config);
     }
 

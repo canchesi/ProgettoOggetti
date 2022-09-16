@@ -5,6 +5,7 @@
         <token>TOKEN</token>
     </telegram-api>
     <database>
+        <prefix value="PREFIX"/>
         <url value="URL"/>
         <username value="USER"/>
         <password value="PASS"/>
