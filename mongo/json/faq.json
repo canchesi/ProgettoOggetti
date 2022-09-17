@@ -1,0 +1,10 @@
+{
+    "name": "faq",
+    "subj": 0,
+    "questions": [
+      {
+        "q": "Come stai?",
+        "a": "Bene"
+      }
+    ]
+  }

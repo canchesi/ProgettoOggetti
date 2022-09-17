@@ -1,0 +1,17 @@
+{
+  "name": "functionalities",
+  "functs": [
+    { 
+      "title": "❓ Domande frequenti",
+      "callback": "faq"
+    },
+    {
+      "title": "📝 Fai una domanda",
+      "link": "https://www.google.com/"
+    },
+    {
+      "title": "🗓 Richiedi appuntamento",
+      "link": "https://www.google.com/"
+    }
+  ]
+}

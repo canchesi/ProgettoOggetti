@@ -1,0 +1,9 @@
+{
+    "name": "subjects",
+    "subjects": {
+      "0": { 
+        "visibility": "true",
+        "title": "Example 1"
+        }
+    }
+  }
