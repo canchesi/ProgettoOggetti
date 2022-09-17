@@ -17,12 +17,13 @@ public class SubjectMenu extends Menu {
         this.setTextToPrint("Seleziona la materia di interesse");
         try {
             Document document = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("name", "subjects")).first();
-            ArrayList<Map<String, String>> subjects;
+            Map<String, Map<String, String>> subjects;
             if (document != null) {
-                subjects = (ArrayList<Map<String, String>>) document.get("subjects");
-                for (byte i = 0; i < subjects.size(); ++i)
-                    if (Boolean.parseBoolean(subjects.get(i).get("visibility")))
-                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(subjects.get(i).get("title"), "subj="+String.valueOf(i)))));
+                subjects = (Map<String, Map<String, String>>) document.get("subjects");
+                Set<String> keys = subjects.keySet();
+                for (Object key: keys)
+                    if (Boolean.parseBoolean(subjects.get(key).get("visibility")))
+                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(subjects.get(key).get("title"), "subj="+key))));
             }
             this.getAllButtons().add(new ArrayList<>(List.of(new Button("⬆️️️ Torna all'inizio", "/restart"))));
             } catch(Exception e){
