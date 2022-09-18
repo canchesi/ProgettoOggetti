@@ -2,7 +2,7 @@ version: "3.0"
 
 services:
   mongodb:
-    image: "prova"
+    image: "canchesi/gallettabot:mongo-1.0"
     container_name: "mongoGallettaBot"
     ports:
       - "27017:27017"
@@ -15,7 +15,7 @@ services:
       - "default"
 
   gallettaBot:
-    image: "klaus:5000/gallettabot:1.4"
+    image: "canchesi/gallettabot:1.4"
     container_name: "GallettaBot"
     environment:
       TELEGRAM_TOKEN: "5520286465:AAGfEVNeE4g5cdhIMVBKNhhXXZ8AarzYU-U"
