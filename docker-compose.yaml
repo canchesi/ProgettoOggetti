@@ -19,6 +19,7 @@ services:
     container_name: "GallettaBot"
     environment:
       TELEGRAM_TOKEN: "5520286465:AAGfEVNeE4g5cdhIMVBKNhhXXZ8AarzYU-U"
+      BOTNAME: "GallettaBot"
       MONGO_URL: "claudioanchesi.ddns.net:27017"
       MONGO_USER: "root"
       MONGO_PASS: "root"

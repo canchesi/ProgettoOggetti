@@ -7,6 +7,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import src.main.java.exceptions.UnexpectedRequestException;
 
+import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /*
     Bisogna estendere la classe TelegramLongPollingBot per poter creare e gestire il backend del bot.
     È obbligatorio dover fare l'override di tre metodi: getBotUsername(), getBotToken() e onUpdateReceived().
@@ -27,7 +32,15 @@ public final class GallettaBot extends TelegramLongPollingBot{
 
     @Override
     public String getBotUsername() {
-        return "GallettaBot";
+        String botName;
+        try {
+            Scanner reader = new Scanner(new File("bot_name.txt"));
+            botName = reader.nextLine();
+        } catch (FileNotFoundException ignored) {
+            botName = "No name set.";
+        }
+
+        return botName;
     }
 
     @Override
@@ -53,6 +66,7 @@ public final class GallettaBot extends TelegramLongPollingBot{
 
         // Il metodo handleRequest cattura e gestisce il messaggio inviato dall'utente.
         try {
+            System.out.println(getBotUsername());
             message = handler.handleRequest(handler.checkAndGetMessage(update));
         } catch (UnexpectedRequestException e) {
             // In caso di richiesta sconosciuta il bot resetta la chat.

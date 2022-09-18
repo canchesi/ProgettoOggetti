@@ -6,6 +6,7 @@ ENV MONGO_USER=""
 ENV MONGO_PASS=""
 ENV MONGO_EXTRA=""
 ENV MONGO_PREFIX=""
+ENV BOTNAME=""
 
 COPY . /usr/src/GallettaBot
 
