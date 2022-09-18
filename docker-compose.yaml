@@ -15,7 +15,7 @@ services:
       - "default"
 
   gallettaBot:
-    image: "klaus:5000/gallettabot:1.3"
+    image: "klaus:5000/gallettabot:1.4"
     container_name: "GallettaBot"
     environment:
       TELEGRAM_TOKEN: "5520286465:AAGfEVNeE4g5cdhIMVBKNhhXXZ8AarzYU-U"

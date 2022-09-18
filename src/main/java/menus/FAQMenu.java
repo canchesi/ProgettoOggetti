@@ -24,18 +24,15 @@ public class FAQMenu extends SubjectMenu {
         try{
             Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("subj", this.getSubject())).first();
             if (faq != null) {
-                faq = ((Map<String, String>) faq).get("questions");
+                faq = ((Map<String, Object>) faq).get("questions");
                 byte i = 0;
-                for (Object current : (ArrayList) faq) {
-                    Iterator<Object> currentIterators = ((Document) current).values().iterator();
-                    while (currentIterators.hasNext()) {
-                        String question = currentIterators.next().toString();
-                        String answer = currentIterators.next().toString();
-                        if (isLink(answer))
-                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, new URL(answer)))));
-                        else {
-                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, "quest:subj="+this.getSubject()+",q="+i++))));
-                        }
+                for (Object current : ((Map<String, Object>) faq).values()) {
+                    String question = (String) ((Document) current).get("q");
+                    String answer = (String) ((Document) current).get("a");
+                    if (isLink(answer))
+                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, new URL(answer)))));
+                    else {
+                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, "quest:subj="+this.getSubject()+",q="+i++))));
                     }
                 }
             }

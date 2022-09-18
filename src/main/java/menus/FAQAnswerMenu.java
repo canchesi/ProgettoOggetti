@@ -22,7 +22,7 @@ public class FAQAnswerMenu extends Menu{
                 .find(new Document(parsedQuestion.get(0).get(0), parsedQuestion.get(0).get(1))).first();
         if (faq != null) {
             faq = ((Document) faq).get("questions");
-            Map<String, String> toPrint = ((List<Map<String, String>>) faq).get(Byte.parseByte(parsedQuestion.get(1).get(1)));
+            Map<String, String> toPrint =  ((Map<String, Map<String, String>>) faq).get(parsedQuestion.get(1).get(1));
             this.setTextToPrint("Domanda:\n" + toPrint.get("q") + "\n\nRisposta:\n" + toPrint.get("a"));
         }
         this.getAllButtons().add(new ArrayList<>(List.of(new Button("⬆️ Torna all'inizio", "/restart"))));
