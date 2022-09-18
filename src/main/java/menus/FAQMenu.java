@@ -1,6 +1,7 @@
 package src.main.java.menus;
 
 import org.bson.Document;
+import src.main.java.GoBack;
 import src.main.java.Button;
 import src.main.java.DatabaseClient;
 
@@ -9,7 +10,7 @@ import java.util.*;
 
 import static src.main.java.Utilities.isLink;
 
-public class FAQMenu extends SubjectMenu {
+public class FAQMenu extends Menu implements GoBack {
 
     private final String subject;
 
@@ -30,13 +31,13 @@ public class FAQMenu extends SubjectMenu {
                     String question = (String) ((Document) current).get("q");
                     String answer = (String) ((Document) current).get("a");
                     if (isLink(answer))
-                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, new URL(answer)))));
+                        this.getButtons().add(new ArrayList<>(List.of(new Button(question, new URL(answer)))));
                     else {
-                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, "quest:subj="+this.getSubject()+",q="+i++))));
+                        this.getButtons().add(new ArrayList<>(List.of(new Button(question, "quest:subj="+this.getSubject()+",q="+i++))));
                     }
                 }
             }
-            this.getAllButtons().add(new ArrayList<>(List.of(new Button("⬆️ Torna all'inizio", "/restart"))));
+            this.getButtons().add(new ArrayList<>(List.of(new Button("\uD83C\uDFE0️ Home", "/restart"), this.generateBackButton("faq"))));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -47,4 +48,8 @@ public class FAQMenu extends SubjectMenu {
         return subject;
     }
 
+    @Override
+    public Button generateBackButton(Object request) {
+        return new Button(GoBack.upArrow+"️ Indietro", (String) request);
+    }
 }

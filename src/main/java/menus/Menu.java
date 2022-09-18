@@ -22,7 +22,7 @@ public abstract class Menu {
         return this;
     }
 
-    public List<List<Button>> getAllButtons() {
+    public List<List<Button>> getButtons() {
         return allButtons;
     }
 

@@ -1,12 +1,13 @@
 package src.main.java.menus;
 
 import org.bson.Document;
+import src.main.java.GoBack;
 import src.main.java.Button;
 import src.main.java.DatabaseClient;
 
 import java.util.*;
 
-public class FAQAnswerMenu extends Menu{
+public class FAQAnswerMenu extends Menu implements GoBack {
 
     private final String question;
 
@@ -16,7 +17,7 @@ public class FAQAnswerMenu extends Menu{
     }
 
     @Override
-    public Menu generateButtons() {
+    public Menu generateButtons(){
         List<List<String>> parsedQuestion = parseAnswer(question);
         Object faq = this.getClient().getMongo().getDatabase("gallettabot").getCollection("menus")
                 .find(new Document(parsedQuestion.get(0).get(0), parsedQuestion.get(0).get(1))).first();
@@ -25,7 +26,7 @@ public class FAQAnswerMenu extends Menu{
             Map<String, String> toPrint =  ((Map<String, Map<String, String>>) faq).get(parsedQuestion.get(1).get(1));
             this.setTextToPrint("Domanda:\n" + toPrint.get("q") + "\n\nRisposta:\n" + toPrint.get("a"));
         }
-        this.getAllButtons().add(new ArrayList<>(List.of(new Button("⬆️ Torna all'inizio", "/restart"))));
+        this.getButtons().add(new ArrayList<>(List.of(new Button("\uD83C\uDFE0 Home", "/restart"), this.generateBackButton(parsedQuestion))));
         return this;
     }
 
@@ -41,4 +42,8 @@ public class FAQAnswerMenu extends Menu{
         return parse;
     }
 
+    @Override
+    public Button generateBackButton(Object request) {
+        return new Button(GoBack.upArrow+" Indietro", "subj="+((List<List<String>>) request).get(0).get(1));
+    }
 }

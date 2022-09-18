@@ -1,6 +1,5 @@
 package src.main.java;
 
-import jdk.jshell.execution.Util;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -86,7 +85,7 @@ public final class MessageHandler {
 
     // Crea la risposta del bot in base al menu
     private void setResponse() {
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup((List<List<InlineKeyboardButton>>) (Object) this.menu.generateButtons().getAllButtons());
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup((List<List<InlineKeyboardButton>>) (Object) this.menu.generateButtons().getButtons());
         this.response.setText(this.menu.getTextToPrint());
         this.response.setReplyMarkup(markup);
     }

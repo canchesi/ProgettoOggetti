@@ -22,9 +22,9 @@ public class MainMenu extends Menu{
                 ArrayList<Map<String, String>> functs = (ArrayList<Map<String, String>>) document.get("functs");
                 for (Map<String, String> func: functs)
                     if (func.containsKey("link"))
-                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), new URL(func.get("link"))))));
+                        this.getButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), new URL(func.get("link"))))));
                     else
-                        this.getAllButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), func.get("callback")))));
+                        this.getButtons().add(new ArrayList<>(List.of(new Button(func.get("title"), func.get("callback")))));
             }
         } catch (NullPointerException | MalformedURLException npe) {
             return null;
@@ -33,8 +33,8 @@ public class MainMenu extends Menu{
     }
 
     @Override
-    public List<List<Button>> getAllButtons() {
-        return super.getAllButtons();
+    public List<List<Button>> getButtons() {
+        return super.getButtons();
     }
 
 }

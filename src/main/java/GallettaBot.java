@@ -66,7 +66,6 @@ public final class GallettaBot extends TelegramLongPollingBot{
 
         // Il metodo handleRequest cattura e gestisce il messaggio inviato dall'utente.
         try {
-            System.out.println(getBotUsername());
             message = handler.handleRequest(handler.checkAndGetMessage(update));
         } catch (UnexpectedRequestException e) {
             // In caso di richiesta sconosciuta il bot resetta la chat.
