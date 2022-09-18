@@ -19,11 +19,10 @@ public class FAQAnswerMenu extends Menu{
     public Menu generateButtons() {
         List<List<String>> parsedQuestion = parseAnswer(question);
         Object faq = this.getClient().getMongo().getDatabase("gallettabot").getCollection("menus")
-                .find((new Document(parsedQuestion.get(0).get(0), parsedQuestion.get(0).get(1)))
-                        .append(parsedQuestion.get(1).get(0), Integer.parseInt(parsedQuestion.get(1).get(1)))).first();
+                .find(new Document(parsedQuestion.get(0).get(0), parsedQuestion.get(0).get(1))).first();
         if (faq != null) {
             faq = ((Document) faq).get("questions");
-            Map<String, String> toPrint = ((List<Map<String, String>>) faq).get(Byte.parseByte(parsedQuestion.get(2).get(1)));
+            Map<String, String> toPrint = ((List<Map<String, String>>) faq).get(Byte.parseByte(parsedQuestion.get(1).get(1)));
             this.setTextToPrint("Domanda:\n" + toPrint.get("q") + "\n\nRisposta:\n" + toPrint.get("a"));
         }
         this.getAllButtons().add(new ArrayList<>(List.of(new Button("⬆️ Torna all'inizio", "/restart"))));

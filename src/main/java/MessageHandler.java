@@ -76,7 +76,7 @@ public final class MessageHandler {
 
     // Crea un menu per la stampa delle FAQ della materia selezionata
     private void handleFAQMenu(String handledCase) throws UnexpectedSubmenuException {
-        this.menu = new FAQMenu(client, Byte.parseByte(handledCase.split("=", 2)[1]));
+        this.menu = new FAQMenu(client, handledCase.split("=", 2)[1]);
     }
 
     // Crea un messaggio di risposta con la domanda selezionata

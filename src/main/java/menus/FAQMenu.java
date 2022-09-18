@@ -11,9 +11,9 @@ import static src.main.java.Utilities.isLink;
 
 public class FAQMenu extends SubjectMenu {
 
-    private final byte subject;
+    private final String subject;
 
-    public FAQMenu(DatabaseClient client, byte subject) {
+    public FAQMenu(DatabaseClient client, String subject) {
         super(client);
         this.subject = subject;
     }
@@ -22,7 +22,7 @@ public class FAQMenu extends SubjectMenu {
     public Menu generateButtons() {
         this.setTextToPrint("Seleziona una domanda");
         try{
-            Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find((new Document("name", "faq")).append("subj", this.getSubject())).first();
+            Object faq = super.getClient().getMongo().getDatabase("gallettabot").getCollection("menus").find(new Document("subj", this.getSubject())).first();
             if (faq != null) {
                 faq = ((Map<String, String>) faq).get("questions");
                 byte i = 0;
@@ -34,7 +34,7 @@ public class FAQMenu extends SubjectMenu {
                         if (isLink(answer))
                             this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, new URL(answer)))));
                         else {
-                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, "quest:name=faq,subj="+this.getSubject()+",q="+i++))));
+                            this.getAllButtons().add(new ArrayList<>(List.of(new Button(question, "quest:subj="+this.getSubject()+",q="+i++))));
                         }
                     }
                 }
@@ -46,7 +46,7 @@ public class FAQMenu extends SubjectMenu {
         return this;
     }
 
-    public byte getSubject() {
+    public String getSubject() {
         return subject;
     }
 
