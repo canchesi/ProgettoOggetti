@@ -1,6 +1,6 @@
 # ProgettoOggetti
 
-[GallettaBot](t.me/GallettaBot)
+[GallettaBot](https://t.me/GallettaBot)
 
 [Guida YouTube](https://www.youtube.com/watch?v=rDU3RGlm37k)
 
