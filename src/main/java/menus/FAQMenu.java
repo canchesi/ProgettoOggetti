@@ -1,7 +1,7 @@
 package src.main.java.menus;
 
 import org.bson.Document;
-import src.main.java.GoBack;
+import src.main.java.Backable;
 import src.main.java.Button;
 import src.main.java.DatabaseClient;
 
@@ -10,7 +10,7 @@ import java.util.*;
 
 import static src.main.java.Utilities.isLink;
 
-public class FAQMenu extends Menu implements GoBack {
+public final class FAQMenu extends Menu implements Backable {
 
     private final String subject;
 
@@ -50,6 +50,6 @@ public class FAQMenu extends Menu implements GoBack {
 
     @Override
     public Button generateBackButton(Object request) {
-        return new Button(GoBack.upArrow+"️ Indietro", (String) request);
+        return new Button(Backable.upArrow+"️ Indietro", (String) request);
     }
 }

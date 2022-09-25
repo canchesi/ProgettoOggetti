@@ -5,7 +5,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
 import java.io.*;
 
-public class XMLReader {
+public final class XMLReader {
 
     private final File parsingFile;
     // L'oggetto doc rappresenta il file XML già parsificato tramite i metodi del pacchetto DOM.
@@ -28,10 +28,6 @@ public class XMLReader {
 
     public File getParsingFile() {
         return parsingFile;
-    }
-
-    public String getParsingFileAbs(){
-        return this.parsingFile.getAbsolutePath();
     }
 
     public Document getDoc() {

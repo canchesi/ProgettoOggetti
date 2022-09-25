@@ -1,13 +1,13 @@
 package src.main.java.menus;
 
 import org.bson.Document;
-import src.main.java.GoBack;
+import src.main.java.Backable;
 import src.main.java.Button;
 import src.main.java.DatabaseClient;
 
 import java.util.*;
 
-public class SubjectMenu extends Menu implements GoBack {
+public final class SubjectMenu extends Menu implements Backable {
 
     public SubjectMenu(DatabaseClient client) {
         super(client);
@@ -44,6 +44,6 @@ public class SubjectMenu extends Menu implements GoBack {
 
     @Override
     public Button generateBackButton(Object request) {
-        return new Button(GoBack.upArrow+" Indietro "+ GoBack.upArrow, (String) request);
+        return new Button(Backable.upArrow+" Indietro "+ Backable.upArrow, (String) request);
     }
 }

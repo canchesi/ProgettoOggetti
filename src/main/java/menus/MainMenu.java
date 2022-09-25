@@ -7,7 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-public class MainMenu extends Menu{
+public final class MainMenu extends Menu{
 
     public MainMenu(DatabaseClient client) {
         super(client);

@@ -9,7 +9,7 @@ import java.net.URL;
 * eventualmente restituire qualcosa all'utente, o setti un URL raggiungibile tramite la pressione del tasto.
 * */
 
-public class Button extends InlineKeyboardButton {
+public final class Button extends InlineKeyboardButton {
 
     public Button(String title, String callback){
         super();

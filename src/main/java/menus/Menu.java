@@ -8,13 +8,13 @@ import java.util.List;
 
 public abstract class Menu {
 
-    private final List<List<Button>> allButtons;
+    private final List<List<Button>> Buttons;
     private String textToPrint;
     private final DatabaseClient client;
 
     public Menu(DatabaseClient client){
         this.client = client;
-        this.allButtons = new ArrayList<>();
+        this.Buttons = new ArrayList<>();
         this.textToPrint = null;
     }
 
@@ -23,7 +23,7 @@ public abstract class Menu {
     }
 
     public List<List<Button>> getButtons() {
-        return allButtons;
+        return Buttons;
     }
 
     public DatabaseClient getClient() {

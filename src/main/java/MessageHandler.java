@@ -51,9 +51,8 @@ public final class MessageHandler {
                 this.setResponse();
 
             return this.response;
-        } else {
+        } else
             throw new UnexpectedRequestException();
-        }
     }
 
     private void handleCommand(String handledCase) throws UnexpectedCommandException {

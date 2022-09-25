@@ -1,6 +1,6 @@
 package src.main.java;
 
-public interface GoBack {
+public interface Backable {
 
     String upArrow = "⬆️";
     Button generateBackButton(Object request);
