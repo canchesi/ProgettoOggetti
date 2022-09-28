@@ -20,7 +20,7 @@ public final class DatabaseClient {
     }
 
     private String buildMongoURI(Config config) {
-        StringBuilder uri = new StringBuilder(config.getMongoCredentials().get("prefix")+"://");
+        StringBuilder uri = new StringBuilder(!config.getMongoCredentials().get("prefix").isEmpty() ? config.getMongoCredentials().get("prefix") : "mongodb" +"://");
         String[] whatToSearch = {"username", "password", "url", "extra"};
         String[] specialChars = {":", "@"};
         ArrayList<String> uriComponents = new ArrayList<>();
