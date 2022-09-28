@@ -5,6 +5,7 @@ import src.main.java.Backable;
 import src.main.java.Button;
 import src.main.java.DatabaseClient;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -38,8 +39,8 @@ public final class FAQMenu extends Menu implements Backable {
                 }
             }
             this.getButtons().add(new ArrayList<>(List.of(new Button("\uD83C\uDFE0️ Home", "/restart"), this.generateBackButton("faq"))));
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (NullPointerException | MalformedURLException npe) {
+            return null;
         }
         return this;
     }

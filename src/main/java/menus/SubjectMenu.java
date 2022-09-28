@@ -5,6 +5,7 @@ import src.main.java.Backable;
 import src.main.java.Button;
 import src.main.java.DatabaseClient;
 
+import java.net.MalformedURLException;
 import java.util.*;
 
 public final class SubjectMenu extends Menu implements Backable {
@@ -26,9 +27,9 @@ public final class SubjectMenu extends Menu implements Backable {
                         this.getButtons().add(new ArrayList<>(List.of(new Button(subjects.get(key).get("title"), "subj="+key))));
             }
             this.getButtons().add(new ArrayList<>(List.of(generateBackButton("/restart"))));
-            } catch(Exception e){
-                e.printStackTrace();
-            }
+        } catch (NullPointerException npe) {
+            return null;
+        }
         return this;
     }
 
