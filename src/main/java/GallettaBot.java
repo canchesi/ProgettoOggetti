@@ -92,7 +92,6 @@ public final class GallettaBot extends TelegramLongPollingBot{
                 try {
                     execute(toBeDeleted);
                 } catch (TelegramApiException e) {
-                    e.printStackTrace();
                     // In caso di errore, viene eliminato il documento relativo alla chat incriminata.
                     thisChat.deleteChat();
                 }
